@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h4>Invoice / Statement</h4>
+
+<form method="post" class="card p-3 mb-3">
+<div class="row g-2">
+
+<div class="col-md-2">
+    <label>From Date</label>
+    <input type="date" name="from_date" class="form-control" value="{{ from_date }}">
+</div>
+
+<div class="col-md-2">
+    <label>To Date</label>
+    <input type="date" name="to_date" class="form-control" value="{{ to_date }}">
+</div>
+
+<div class="col-md-2">
+    <label>Code</label>
+    <select name="code" class="form-control">
+        <option value="ALL">ALL</option>
+        {% for c in codes %}
+        <option value="{{ c.code }}" {% if selected_code == c.code %}selected{% endif %}>
+            {{ c.code }}
+        </option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="col-md-2 d-flex align-items-end">
+    <button class="btn btn-primary w-100">
+        <i class="fa fa-filter"></i> Filter
+    </button>
+</div>
+
+</div>
+</form>
+
+<!-- Export uses SAME filter values -->
+<form method="post" action="/invoice-export">
+<input type="hidden" name="from_date" value="{{ from_date }}">
+<input type="hidden" name="to_date" value="{{ to_date }}">
+<input type="hidden" name="code" value="{{ selected_code }}">
+<button class="btn btn-success mb-2">
+    <i class="fa fa-file-excel"></i> Export to Excel
+</button>
+</form>
+
+<div class="card p-3">
+<table class="table table-bordered table-sm">
+<thead class="table-dark">
+<tr>
+<th>SNO</th>
+<th>Date</th>
+<th>Destination</th>
+<th>AWB No</th>
+<th>Weight</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+{% for r in rows %}
+<tr>
+<td>{{ loop.index }}</td>
+<td>{{ r.booking_date }}</td>
+<td>{{ r.destination }}</td>
+<td>{{ r.awb_no }}</td>
+<td>{{ r.weight }}</td>
+<td>{{ r.total_amount }}</td>
+</tr>
+{% else %}
+<tr>
+<td colspan="6" class="text-center">No Records</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<h6 class="text-end mt-2">
+    <strong>Sum of Total Amount: {{ total_sum }}</strong>
+</h6>
+</div>
+
+{% endblock %}

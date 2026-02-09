@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h4 class="mb-3">Zone Entry</h4>
+
+<!-- Export Button -->
+<div class="d-flex justify-content-end mb-2">
+    <a href="/zone-export" class="btn btn-success">
+        <i class="fa fa-file-excel"></i> Export to Excel
+    </a>
+</div>
+
+<!-- Entry Form -->
+<div class="card p-3 mb-4">
+    <form method="post">
+        <div class="row">
+            <div class="col-md-5">
+                <label class="form-label">District</label>
+                <input type="text" name="district" class="form-control" placeholder="Enter District" required>
+            </div>
+
+            <div class="col-md-5">
+                <label class="form-label">Rate Zone</label>
+                <input type="text" name="rate_zone" class="form-control" placeholder="Enter Rate Zone" required>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-success w-100">
+                    <i class="fa fa-save"></i> Save
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Data Table -->
+<div class="card p-3">
+    <h6 class="mb-3">Zone List</h6>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th width="10%">ID</th>
+                <th width="45%">District</th>
+                <th width="45%">Rate Zone</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for z in zones %}
+            <tr>
+                <td>{{ z.id }}</td>
+                <td>{{ z.district }}</td>
+                <td>{{ z.rate_zone }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3" class="text-center text-muted">
+                    No Records Found
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

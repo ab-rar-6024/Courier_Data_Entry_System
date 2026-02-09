@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h4>Day Book</h4>
+
+<!-- FILTER -->
+<form method="post" class="card p-3 mb-3">
+<div class="row g-2">
+
+<div class="col-md-2">
+    <label>Date</label>
+    <input type="date" name="entry_date" class="form-control" value="{{ entry_date }}">
+</div>
+
+<div class="col-md-2">
+    <label>Weight</label>
+    <input type="number" step="0.01" name="weight" class="form-control" value="{{ weight }}">
+</div>
+
+<div class="col-md-3">
+    <label>AWB No</label>
+    <input name="awb_no" class="form-control" value="{{ awb_no }}">
+</div>
+
+<div class="col-md-3">
+    <label>Destination</label>
+    <input name="destination" class="form-control" value="{{ destination }}">
+</div>
+
+<div class="col-md-2 d-flex align-items-end">
+    <button class="btn btn-primary w-100">
+        <i class="fa fa-filter"></i> Filter
+    </button>
+</div>
+
+</div>
+</form>
+
+<!-- EXPORT -->
+<form method="post" action="/day-book-export">
+<input type="hidden" name="entry_date" value="{{ entry_date }}">
+<input type="hidden" name="weight" value="{{ weight }}">
+<input type="hidden" name="awb_no" value="{{ awb_no }}">
+<input type="hidden" name="destination" value="{{ destination }}">
+<button class="btn btn-success mb-2">
+    <i class="fa fa-file-excel"></i> Export to Excel
+</button>
+</form>
+
+<!-- TABLE -->
+<div class="card p-3">
+<table class="table table-bordered table-sm">
+<thead class="table-dark">
+<tr>
+<th>SNO</th>
+<th>Weight</th>
+<th>AWB No</th>
+<th>Destination</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+{% for r in rows %}
+<tr>
+<td>{{ loop.index }}</td>
+<td>{{ r.weight }}</td>
+<td>{{ r.awb_no }}</td>
+<td>{{ r.destination }}</td>
+<td>{{ r.total_amount }}</td>
+</tr>
+{% else %}
+<tr>
+<td colspan="5" class="text-center">No Records</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<h6 class="text-end mt-2">
+<strong>Sum of Total Amount: {{ total_sum }}</strong>
+</h6>
+</div>
+
+{% endblock %}
